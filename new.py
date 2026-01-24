@@ -70,11 +70,21 @@ def calculate_air_pressure(altitude):
     air_pressure = sea_level_pressure * bracket**exponent
 
     return air_pressure
-num1 = Decimal("10000")
-print(calculate_air_pressure(num1))
 
+num1 = Decimal("101325")
+num2 = Decimal("288.15")
 
+# Calculates the air density using the air pressure and temperature. 
 
+def calculate_air_density(air_pressure, temperature):
+
+    specific_gas_constant = Decimal("287.05")
+
+    air_density = air_pressure / (specific_gas_constant * temperature)
+
+    return air_density
+
+print(calculate_air_density(num1,num2))
 
 
 
