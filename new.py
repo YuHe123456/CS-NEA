@@ -31,10 +31,6 @@ def calculate_velocity(current_vel, acceleration, time_frame):
     return (x_vel,y_vel)
 
 
-num1 = Decimal("3290.32498")
-num2 = Decimal("3248.34947")
-num3 = Decimal("328920.43")
-
 # Calculates the acceleration of the aircraft, given a specific force and the mass of the aircraft.
 
 def calculate_acceleration(force, mass):
@@ -63,16 +59,22 @@ def calculate_air_pressure(altitude):
 
     sea_level_pressure = Decimal("101325") # measured in Pascals (Newtons / meter)
     lapse_rate = Decimal("0.0065")
-    molar_gas_constant = Decimal("8.31446") # Labelled as R.
+    molar_gas_constant = Decimal("8.31446") 
     gravitational_acceleration = Decimal("9.81") # Measured in meters per second squared.
-    sea_level_temperature = 288.15
+    sea_level_temperature = Decimal("288.15")
+    molar_mass_air = Decimal("0.0289652")
 
     bracket = (1 - (lapse_rate * altitude / sea_level_temperature))
-    exponent = gravitational_acceleration / (molar_gas_constant * lapse_rate)
-    
+    exponent = gravitational_acceleration * molar_mass_air / (molar_gas_constant * lapse_rate)
+
     air_pressure = sea_level_pressure * bracket**exponent
 
     return air_pressure
+num1 = Decimal("10000")
+print(calculate_air_pressure(num1))
+
+
+
 
 
 
