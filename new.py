@@ -71,9 +71,6 @@ def calculate_air_pressure(altitude):
 
     return air_pressure
 
-num1 = Decimal("101325")
-num2 = Decimal("288.15")
-
 # Calculates the air density using the air pressure and temperature. 
 
 def calculate_air_density(air_pressure, temperature):
@@ -84,8 +81,25 @@ def calculate_air_density(air_pressure, temperature):
 
     return air_density
 
-print(calculate_air_density(num1,num2))
+# Calculates the magnitude of speed of an aircraft
 
+def calculate_air_speed(velocity):
 
+    x_vel,y_vel = velocity
 
+    airspeed_squared = x_vel**2 + y_vel**2 # Follows Pythagoras: a^2 + b^2 = c^2
 
+    return airspeed_squared**Decimal("0.5") # Roots the c^2
+
+num1 = Decimal("0.8")
+num2 = Decimal("125")
+
+# Calculate the dynamic pressure using air density and the airspeed
+
+def calculate_dynamic_pressure(air_density,airspeed):
+
+    dynamic_pressure = Decimal("0.5") * air_density * airspeed**2
+
+    return dynamic_pressure
+
+print(calculate_dynamic_pressure(num1,num2))
