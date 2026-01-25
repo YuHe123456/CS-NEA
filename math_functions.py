@@ -1,5 +1,7 @@
 from decimal import Decimal, getcontext
 
+# Contains all of the simulation calculations of the program. 
+
 # Calculates the next position of the aircraft given a velocity and a time elapsed variable.
 
 def calculate_position(current_pos, velocity, time_frame):
