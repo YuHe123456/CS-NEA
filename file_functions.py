@@ -12,9 +12,27 @@ def load_file(path):
 
     if not path.exists():
         raise FileNotFoundError(f"{path} does not exist.") # Checks if the path actually exists
+
+    text = path.read_text()
+
+    if text.strip() == "":
+        raise FileNotFoundError(f"{path} is completely empty.")
+
+    text_list = text.splitlines()
+
+    return text_list
+
+# Given a list of lines, find the line which represents the search term
+
+def search_for_line(text_list, target):
+
+    for line in text_list:
+        if (x := line.split(","))[0] == target:
+            return x
     
-    text = path.read_text().splitlines() # Provides a list containing the file's lines
+    raise FileNotFoundError(f"Preset not in file list")
 
-    return text
+text_list = ["F15,324,325,364,342,3264","F16,32,23523,34635,235325,23"]
 
-print(load_file(text_file))
+print(search_for_line(text_list,"F15"))
+
