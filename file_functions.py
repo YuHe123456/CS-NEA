@@ -24,15 +24,24 @@ def load_file(path):
 
 # Given a list of lines, find the line which represents the search term
 
-def search_for_line(text_list, target):
+def search_for_line(preset_list, target):
 
-    for line in text_list:
-        if (x := line.split(","))[0] == target:
-            return x
-    
-    raise FileNotFoundError(f"Preset not in file list")
+    if not preset_list:
+        raise FileNotFoundError("File is empty.")
 
-text_list = ["F15,324,325,364,342,3264","F16,32,23523,34635,235325,23"]
+    for line in preset_list:
 
-print(search_for_line(text_list,"F15"))
+        preset = line.split(",")
+
+        output_list = [preset[0]]
+        output_list.extend(list(map(int, preset[1:]))) # Turns all numbers into int type
+        
+        if output_list[0] == target: # Target found
+            return output_list 
+        
+    raise KeyError(f"Preset not in file list")
+
+text_list = ["single"]
+
+print(search_for_line(text_list,"single"))
 
