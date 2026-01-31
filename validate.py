@@ -5,7 +5,7 @@ NAME_MAX_LENGTH = 20
 
 # Validate a full text file, containing multiple preset strings
 
-def validate_preset_file(preset_file: Path) -> bool:
+def validate_preset_file(preset_file: Path, error_file: Path) -> bool:
     
     if not preset_file.exists():
         raise FileNotFoundError
@@ -18,7 +18,7 @@ def validate_preset_file(preset_file: Path) -> bool:
 
     for i,preset in enumerate(preset_list):
 
-        if validate_preset(preset):
+        if validate_preset(preset, error_file):
             valid_list.append(i) # Marks preset as valid
             valid_preset_count += 1
 
@@ -29,8 +29,17 @@ def validate_preset_file(preset_file: Path) -> bool:
 
     valid_preset_output = "\n".join(valid_preset_list) + "\n" # Creates text of valid presets
 
+    preset_file.write_text(valid_preset_output)
+
     print(f"Valid Files: {valid_preset_count}\nInvalid Files: {invalid_preset_count}") 
     # reports output for maintenance purposes
+
+    if invalid_preset_count == 0: # If the file didn't remove anything, returns true for "True, it's valid"
+        return True
+    
+    return False # "False, it isn't fully valid."
+
+    
     
     
 
