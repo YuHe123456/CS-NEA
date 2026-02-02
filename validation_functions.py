@@ -66,8 +66,9 @@ def write_error(preset: str, error_file: Path) -> None:
     if not error_file.exists(): # For testing purposes
         raise FileNotFoundError
     
-    with open(error_file, "a") as f: # Write the preset to the error file 
-        f.write(preset + "\n")
+    if preset.strip() != "": # Checks for whitespace
+        with open(error_file, "a") as f: # Write the preset to the error file 
+            f.write(preset + "\n")
 
 # Validate a full preset string, given in the form "name,coeff,intercept..." 
 # called by validate_preset_file and calls multiple validation subprogs
@@ -129,7 +130,11 @@ def validate_preset_file(preset_file: Path, error_file: Path) -> bool:
     
     valid_preset_list = [preset_list[i] for i in valid_list] 
 
-    valid_preset_output = "\n".join(valid_preset_list) + "\n" # Creates text of valid presets
+    valid_preset_output = "\n".join(valid_preset_list) # Creates text of valid presets
+
+    if valid_preset_output.strip() != "": # If there are valid files, add \n
+
+        valid_preset_output = valid_preset_output + "\n" 
 
     preset_file.write_text(valid_preset_output)
 
