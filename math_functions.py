@@ -104,4 +104,5 @@ def calculate_dynamic_pressure(air_density,airspeed):
 
     return dynamic_pressure
 
-print(calculate_dynamic_pressure(num1,num2))
+if __name__ == "__main__":
+    print(calculate_dynamic_pressure(num1,num2))
