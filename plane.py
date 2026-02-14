@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from decimal import Decimal
 
-import math_functions
-import validation_functions
-import file_functions
+import math_functions as mf 
+import validation_functions as vf
+import file_functions as ff
 
 @dataclass(frozen=True)
 class PlaneConstants:
@@ -41,3 +41,15 @@ class Plane:
 
     def replace_constants(self, new_config: PlaneConstants) -> None:
         self.constants = new_config  # Replaces the constant config with a new one
+
+    # A combined subprogram that runs every operation every tick
+
+    def tick(self,time_frame):
+        pass
+        # Conditions calculation
+        # Force calculation
+        # Velocity calculation
+        # Position calculation
+
+
+    
