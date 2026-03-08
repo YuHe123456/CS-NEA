@@ -1,5 +1,5 @@
 from decimal import Decimal, getcontext
-
+from math import sin,cos, radians
 # Contains all of the simulation calculations of the program. 
 
 # Calculates the next position of the aircraft given a velocity and a time elapsed variable.
@@ -93,8 +93,6 @@ def calculate_air_speed(velocity):
 
     return airspeed_squared**Decimal("0.5") # Roots the c^2
 
-num1 = Decimal("0.8")
-num2 = Decimal("125")
 
 # Calculate the dynamic pressure using air density and the airspeed
 
@@ -104,5 +102,27 @@ def calculate_dynamic_pressure(air_density,airspeed):
 
     return dynamic_pressure
 
+# Sums a set of force vectors consisting of magnitude and direction 
+
+def sum_force_vectors(force_vectors) -> tuple:
+
+    x_force = 0
+    y_force = 0
+    
+    for force_vector in force_vectors:
+
+        magnitude,direction = force_vector[0],radians(force_vector[1])
+
+        x_force += magnitude * cos(direction)  # Sums forces and adds their components to x and y
+        y_force += magnitude * sin(direction)
+    
+    return (Decimal(x_force), Decimal(y_force))
+
+
 if __name__ == "__main__":
-    print(calculate_dynamic_pressure(num1,num2))
+
+    forces_list = [
+        (10, 0), (10, 120), (10, 240)
+    ]
+    
+    print(sum_force_vectors(forces_list))

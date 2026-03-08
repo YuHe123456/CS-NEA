@@ -4,7 +4,7 @@ from math_functions import calculate_position
 import pygame_functions
 import random 
 
-SCALE = 0.005
+SCALE = 0.01
 MAX_VARIATION = 110
 MIN_VARIATION = 90
 X_RESOLUTION = 1280
