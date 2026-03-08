@@ -1,6 +1,6 @@
 from pathlib import Path
-from plane import PlaneConstants
 from decimal import Decimal
+from plane import *
 # Contains all the file management functions for the simulation program. 
 
 # Given a text file path, loads it and returns the lines in a list
@@ -27,7 +27,7 @@ def load_file(path):
 
 # Given a list of lines, find the line which represents the search term
 
-def search_for_line(preset_list, target) -> PlaneConstants:
+def search_for_line(preset_list, target):
 
     if not preset_list:
         raise FileNotFoundError("File is empty.")
@@ -37,21 +37,20 @@ def search_for_line(preset_list, target) -> PlaneConstants:
         preset = line.split(",")
 
         output_list = [preset[0]]
-        output_list.extend(list(map(int, preset[1:]))) # Turns all numbers into int type
+        output_list.extend(list(map(Decimal, preset[1:]))) # Turns all numbers into Decimal type
         
         if output_list[0] == target: # Target found
-            plane_constants = PlaneConstants(
-    name=output_list[0],
-    lift_coefficient_gradient=Decimal(output_list[1]),
-    lift_coefficient_intercept=Decimal(output_list[2]),
-    drag_coefficient_gradient=Decimal(output_list[3]),
-    drag_coefficient_intercept=Decimal(output_list[4]),
-    wing_area=Decimal(output_list[5]),
-    frontal_area=Decimal(output_list[6]),
-    mass=Decimal(output_list[7]),
-    thrust=Decimal(output_list[8])
-)
-            return plane_constants
+            return {
+                'name': output_list[0],
+                'lift_coefficient_gradient': output_list[1],
+                'lift_coefficient_intercept': output_list[2],
+                'drag_coefficient_gradient': output_list[3],
+                'drag_coefficient_intercept': output_list[4],
+                'wing_area': output_list[5],
+                'frontal_area': output_list[6],
+                'mass': output_list[7],
+                'thrust': output_list[8]
+            }
 
         
     raise KeyError(f"Preset not in file list")

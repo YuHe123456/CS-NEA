@@ -1,5 +1,8 @@
 from decimal import Decimal, getcontext
 from math import sin,cos, radians
+
+g = Decimal("9.81")
+
 # Contains all of the simulation calculations of the program. 
 
 # Calculates the next position of the aircraft given a velocity and a time elapsed variable.
@@ -101,6 +104,43 @@ def calculate_dynamic_pressure(air_density,airspeed):
     dynamic_pressure = Decimal("0.5") * air_density * airspeed**2
 
     return dynamic_pressure
+
+# Calculates the drag vector given a set of variables 
+
+def calculate_drag_vector(dynamic_pressure, drag_coefficient, frontal_area, direction, angle_of_attack) -> tuple:
+
+    drag_magnitude = dynamic_pressure * drag_coefficient * frontal_area
+    drag_direction = direction + angle_of_attack - 180 # Drag acts opposite to movement direction
+
+    return (drag_magnitude,drag_direction)
+
+# Calculates the lift vector given a similar variable set
+
+def calculate_lift_vector(dynamic_pressure, lift_coefficient, wing_area, direction, angle_of_attack) -> tuple:
+
+    lift_magnitude = dynamic_pressure * lift_coefficient * wing_area
+    lift_direction = direction + angle_of_attack + 90
+
+    return (lift_magnitude,lift_direction)
+
+# Calculates the coefficient given an intercept and gradient linear model
+
+def calculate_coefficient(gradient,intercept,angle_of_attack) -> Decimal:
+
+    coefficient = intercept + (gradient * angle_of_attack)
+
+    return coefficient
+
+# Calculate weight vector given a mass 
+
+def calculate_weight_vector(mass):
+
+    return (mass * g, -90)
+
+# Calculate the thrust vector 
+
+def calculate_thrust_vector(thrust, direction):
+    return (thrust, direction + 180)
 
 # Sums a set of force vectors consisting of magnitude and direction 
 

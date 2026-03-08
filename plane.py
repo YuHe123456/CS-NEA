@@ -10,6 +10,7 @@ import pygame_functions as pf
 class PlaneConstants:
        
     name: str
+    sprite: pf.newSprite
 
     # Lift and drag coefficient model
 
@@ -47,24 +48,35 @@ class Plane:
 
     # A combined subprogram that runs every operation every tick
 
-    def tick(self,time_frame):
-        pass
-
+    def sim_tick(self,time_frame):
         
         # Conditions calculation
+
+        air_pressure = mf.calculate_air_pressure(self.state.position[1])
+        temperature = mf.calculate_temperature(self.state.position[1])
+        air_density = mf.calculate_air_density(air_pressure, temperature)
+
+        airspeed = mf.calculate_air_speed(self.state.velocity)
+        dynamic_pressure = mf.calculate_dynamic_pressure(air_density, airspeed)
+
+        drag_coefficient = mf.calculate_coefficient(self.constants.drag_coefficient_gradient, self.constants.drag_coefficient_intercept, self.state.angle_of_attack)
+        lift_coefficient = mf.calculate_coefficient(self.constants.lift_coefficient_gradient, self.constants.lift_coefficient_gradient, self.state.angle_of_attack)
+
         # Force calculation
+
+        drag_vector = mf.calculate_drag_vector(dynamic_pressure, drag_coefficient, self.constants.frontal_area, self.state.direction, self.state.angle_of_attack)
+        lift_vector = mf.calculate_lift_vector(dynamic_pressure, lift_coefficient, self.constants.wing_area, self.state.direction, self.state.angle_of_attack)
+        weight_vector = mf.calculate_weight_vector(self.constants.mass)
+        thrust_vector = mf.calculate_thrust_vector(self.constants.thrust, self.state.direction)
+
+        forces = mf.sum_force_vectors([drag_vector,lift_vector,weight_vector,thrust_vector])
+
+        self.state.acceleration = mf.calculate_acceleration(forces, self.constants.mass)
+
         # Velocity calculation
+
+        self.state.velocity = mf.calculate_velocity(self.state.velocity, self.state.acceleration, time_frame)
+
         # Position calculation
 
-# Conditions: Air Pressure, Air Density, Air Speed, Dynamic Pressure, Temp
-
-"""
-Pos
-Vel
-Accel
-Temp
-Air Pressure
-Air Density 
-Air Speed
-Dynamic pressure
-"""
+        self.state.position = mf.calculate_position(self.state.position, self.state.velocity, time_frame)

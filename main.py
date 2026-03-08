@@ -30,24 +30,22 @@ plane_state = PlaneState(
 )
 
 plane_constants = PlaneConstants(
-    name="Placeholder",
-    lift_coefficient_gradient="Placeholder",
-    lift_coefficient_intercept="Placeholder",
-    drag_coefficient_gradient="Placeholder",
-    drag_coefficient_intercept="Placeholder",
-    wing_area="Placeholder",
-    frontal_area="Placeholder",
-    mass="Placeholder",
-    thrust="Placeholder"
+    name="F-15",
+    sprite=plane_sprite_obj,
+    lift_coefficient_gradient=Decimal("0.1066666"),
+    lift_coefficient_intercept=Decimal("0.002625"),
+    drag_coefficient_gradient=Decimal("2"),
+    drag_coefficient_intercept=Decimal("0.034"),
+    wing_area=Decimal("56.5"),
+    frontal_area=Decimal("20"),
+    mass=Decimal("14000"),
+    thrust=Decimal("210000")
 )
 plane_object = Plane(constants=plane_constants, state=plane_state, sprite=plane_sprite)
 
 flight_screen = FlightScreen(plane=plane_object)
 
 plane_visual = makeSprite(plane_sprite)
-
-
-showSprite(plane_visual)
 moveSprite(plane_visual,640,360,centre=True)
 
 angle = 0
@@ -57,22 +55,12 @@ particle_list = []
 
 while True:
 
-    particle_list.append(spawn_particle(plane_velocity,makeSprite(particle_sprite)))
+    # Append particle with plane velocity and particle sprite new object
+    # Move particles
 
-    for particle in particle_list:
-        particle.move_particle(TIME_FRAME)
-        particle.accelerate_particle(acceleration,TIME_FRAME)
-
-    if keyPressed("right") and direction < 8:
-        direction += 1
-        transformSprite(plane_visual,direction,1)
-
-    if keyPressed("left") and direction > -8:
-        direction -= 1
-        transformSprite(plane_visual,direction,1)  
+    # Tilt left and right
     
-    plane_velocity[0] = plane_velocity[0] + acceleration[0]*TIME_FRAME
-    plane_velocity[1] = plane_velocity[1] + acceleration[1]*TIME_FRAME
+    
     
     updateDisplay()
     tick(60)
