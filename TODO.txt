@@ -1,0 +1,8 @@
+To do: 
+
+Create settings gui 
+Create Main menu gui 
+Add error messages and validation 
+
+Finalise the simulation running 
+

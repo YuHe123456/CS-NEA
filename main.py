@@ -48,10 +48,8 @@ flight_screen = FlightScreen(plane=plane_object)
 plane_visual = makeSprite(plane_sprite)
 moveSprite(plane_visual,640,360,centre=True)
 
-angle = 0
-direction = 0
-
 particle_list = []
+
 
 while True:
 
@@ -60,7 +58,8 @@ while True:
 
     # Tilt left and right
     
-    
+    plane_object.sim_tick(TIME_FRAME)
+    plane_object.print_state()
     
     updateDisplay()
     tick(60)

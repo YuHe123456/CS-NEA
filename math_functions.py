@@ -1,5 +1,5 @@
 from decimal import Decimal, getcontext
-from math import sin,cos, radians
+from math import sin, cos, radians, atan, degrees, pi
 
 g = Decimal("9.81")
 
@@ -110,7 +110,7 @@ def calculate_dynamic_pressure(air_density,airspeed):
 def calculate_drag_vector(dynamic_pressure, drag_coefficient, frontal_area, direction, angle_of_attack) -> tuple:
 
     drag_magnitude = dynamic_pressure * drag_coefficient * frontal_area
-    drag_direction = direction + angle_of_attack - 180 # Drag acts opposite to movement direction
+    drag_direction = direction + Decimal(degrees(angle_of_attack)) - 180 # Drag acts opposite to movement direction
 
     return (drag_magnitude,drag_direction)
 
@@ -119,7 +119,7 @@ def calculate_drag_vector(dynamic_pressure, drag_coefficient, frontal_area, dire
 def calculate_lift_vector(dynamic_pressure, lift_coefficient, wing_area, direction, angle_of_attack) -> tuple:
 
     lift_magnitude = dynamic_pressure * lift_coefficient * wing_area
-    lift_direction = direction + angle_of_attack + 90
+    lift_direction = direction + Decimal(degrees(angle_of_attack)) + 90
 
     return (lift_magnitude,lift_direction)
 
@@ -140,7 +140,7 @@ def calculate_weight_vector(mass):
 # Calculate the thrust vector 
 
 def calculate_thrust_vector(thrust, direction):
-    return (thrust, direction + 180)
+    return (thrust, direction)
 
 # Sums a set of force vectors consisting of magnitude and direction 
 
@@ -153,11 +153,20 @@ def sum_force_vectors(force_vectors) -> tuple:
 
         magnitude,direction = force_vector[0],radians(force_vector[1])
 
-        x_force += magnitude * cos(direction)  # Sums forces and adds their components to x and y
-        y_force += magnitude * sin(direction)
+        x_force += magnitude * Decimal(cos(direction))  # Sums forces and adds their components to x and y
+        y_force += magnitude * Decimal(sin(direction))
     
     return (Decimal(x_force), Decimal(y_force))
 
+# Calculate the angle of attack
+
+def calculate_angle_of_attack(velocity,direction):
+    
+    gradient = (0 if velocity[0] == 0 else velocity[1]/velocity[0])
+
+    angle_of_attack = Decimal(atan(gradient)) - Decimal(radians(direction))
+
+    return angle_of_attack
 
 if __name__ == "__main__":
 

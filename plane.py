@@ -48,6 +48,16 @@ class Plane:
 
     # A combined subprogram that runs every operation every tick
 
+    def print_state(self) -> None:
+
+        print(f"""
+            Position: {self.state.position}
+            Velocity: {self.state.velocity}
+            Acceleration: {self.state.acceleration}
+            Angle of Attack: {self.state.angle_of_attack}
+            Direction: {self.state.direction}
+            """)
+
     def sim_tick(self,time_frame):
         
         # Conditions calculation
@@ -58,10 +68,10 @@ class Plane:
 
         airspeed = mf.calculate_air_speed(self.state.velocity)
         dynamic_pressure = mf.calculate_dynamic_pressure(air_density, airspeed)
-
+        self.state.angle_of_attack = mf.calculate_angle_of_attack(self.state.velocity,self.state.direction)
         drag_coefficient = mf.calculate_coefficient(self.constants.drag_coefficient_gradient, self.constants.drag_coefficient_intercept, self.state.angle_of_attack)
         lift_coefficient = mf.calculate_coefficient(self.constants.lift_coefficient_gradient, self.constants.lift_coefficient_gradient, self.state.angle_of_attack)
-
+        
         # Force calculation
 
         drag_vector = mf.calculate_drag_vector(dynamic_pressure, drag_coefficient, self.constants.frontal_area, self.state.direction, self.state.angle_of_attack)
@@ -80,3 +90,4 @@ class Plane:
         # Position calculation
 
         self.state.position = mf.calculate_position(self.state.position, self.state.velocity, time_frame)
+
