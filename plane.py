@@ -10,7 +10,6 @@ import pygame_functions as pf
 class PlaneConstants:
        
     name: str
-    sprite: pf.newSprite
 
     # Lift and drag coefficient model
 
@@ -42,6 +41,12 @@ class Plane:
     constants: PlaneConstants
     state: PlaneState
     sprite: pf.newSprite
+
+    
+    def __post_init__(self):
+        
+        pf.moveSprite(self.sprite,640,360,centre=True)
+
 
     def replace_constants(self, new_config: PlaneConstants) -> None:
         self.constants = new_config  # Replaces the constant config with a new one

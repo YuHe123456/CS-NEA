@@ -1,6 +1,6 @@
 from pathlib import Path
 from decimal import Decimal
-from plane import *
+
 # Contains all the file management functions for the simulation program. 
 
 # Given a text file path, loads it and returns the lines in a list
@@ -40,18 +40,23 @@ def search_for_line(preset_list, target):
         output_list.extend(list(map(Decimal, preset[1:]))) # Turns all numbers into Decimal type
         
         if output_list[0] == target: # Target found
-            return {
-                'name': output_list[0],
-                'lift_coefficient_gradient': output_list[1],
-                'lift_coefficient_intercept': output_list[2],
-                'drag_coefficient_gradient': output_list[3],
-                'drag_coefficient_intercept': output_list[4],
-                'wing_area': output_list[5],
-                'frontal_area': output_list[6],
-                'mass': output_list[7],
-                'thrust': output_list[8]
-            }
+            
+            from plane import PlaneConstants
 
+            # return a PlaneConstants object built from the values
+            plane_constants = PlaneConstants(
+                name=output_list[0],
+                lift_coefficient_gradient=output_list[1],
+                lift_coefficient_intercept=output_list[2],
+                drag_coefficient_gradient=output_list[3],
+                drag_coefficient_intercept=output_list[4],
+                wing_area=output_list[5],
+                frontal_area=output_list[6],
+                mass=output_list[7],
+                thrust=output_list[8]
+            )
+
+            return plane_constants
         
     raise KeyError(f"Preset not in file list")
 
