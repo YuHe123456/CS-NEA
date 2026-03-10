@@ -1,7 +1,7 @@
 from pathlib import Path
 from decimal import Decimal, InvalidOperation
 
-NAME_MAX_LENGTH = 20
+NAME_MAX_LENGTH = 15
 
 base = Path(__file__).parent
 
@@ -18,7 +18,7 @@ def validate_coefficient(coefficient: str) -> bool:
     if decimal_coefficient <= Decimal("0"): # Checks for negative or zero values
         return False
     
-    return True
+    return Decimal(coefficient)
 
 # Validate an intercept - called by validate_preset
 
@@ -33,7 +33,7 @@ def validate_intercept(intercept: str) -> bool:
     if decimal_intercept < Decimal("0"): # 0 values and above are accepted
         return False
     
-    return True
+    return Decimal(intercept)
 
 # Validate a scalar value - called by validate_preset
 
@@ -48,7 +48,7 @@ def validate_scalar(scalar: str) -> bool:
     if decimal_scalar <= Decimal("0"): # Scalars must be positive values
         return False
     
-    return True
+    return Decimal(scalar)
 
 # Validate the length of the name - called by validate_preset
 
@@ -57,7 +57,7 @@ def validate_name(name: str) -> bool:
     if len(name) > NAME_MAX_LENGTH: # Uses global constant to validate name length
         return False
     
-    return True 
+    return name.strip()
 
 # Write a malformed line to the given error file path - called by validate preset
 
@@ -92,9 +92,6 @@ def validate_preset(preset_string: str, error_file: Path) -> bool:
         validate_scalar(preset_values_list[7]),
         validate_scalar(preset_values_list[8])
     ]
-
-    #print(validation_suite) # TEMPORARY ======================================
-    #=========================================================================
 
 
     if not all(validation_suite): # If there is one or more failures in the suite:

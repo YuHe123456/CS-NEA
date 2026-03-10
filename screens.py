@@ -13,7 +13,6 @@ class Screen: # Represents a screen of the program (of which there are 3)
     def activate_screen(self):
 
         pf.setBackgroundColour(MENU_BACKGROUND_COLOUR)
-        print("background coloour set screen")
         for element in self.elements:
             pf.showLabel(element)
     
@@ -56,21 +55,29 @@ class MenuScreen(Screen): # Represents the main menu
 
 class SettingScreen(Screen): # Represents the settings screen
 
-    def __init__(self,elements,variable_boxes):
+    def __init__(self,elements,variable_boxes,label_boxes):
 
         super().__init__(elements)
         self.variable_boxes = variable_boxes
+        self.label_boxes = label_boxes
     
     def activate_screen(self):
         super().activate_screen()
+
         for box in self.variable_boxes:
             pf.showTextBox(box)
+        
+        for label in self.label_boxes:
+            pf.showLabel(label)
     
     def deactivate_screen(self):
         super().deactivate_screen()
+
         for box in self.variable_boxes:
             pf.hideTextBox(box)
 
+        for label in self.label_boxes:
+            pf.hideLabel(label)
 
     
 

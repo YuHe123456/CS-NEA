@@ -7,7 +7,8 @@ from decimal import Decimal
 
 base = Path(__file__).parent
 preset_dir = base / "presets"
-text_file = preset_dir / "a.txt"
+text_file = preset_dir / "test.txt"
+
 
 def load_file(path):
 
@@ -23,6 +24,30 @@ def load_file(path):
 
     return text_list
 
+# Add a line to the preset file, but if the name is already present, replace the current one
+
+def add_line(path, elements):
+
+    # read_text().splitlines() handles empty files and strips the final newline
+    lines = path.read_text().splitlines()
+
+    new_line = ",".join(map(str, elements))
+
+    for i in range(len(lines)):
+        if lines[i].split(",")[0] == elements[0]:
+            lines[i] = new_line
+            break
+            
+    else:
+        lines.append(new_line)
+
+    path.write_text("\n".join(lines) + "\n")
+
+
+
+if __name__ == "__main__":
+
+    add_line(text_file, ["F-16", 999, 45000, 111, 222, 333, 444, 555, 1])
 
 
 # Given a list of lines, find the line which represents the search term
@@ -40,7 +65,7 @@ def search_for_line(preset_list, target):
         output_list.extend(list(map(Decimal, preset[1:]))) # Turns all numbers into Decimal type
         
         if output_list[0] == target: # Target found
-            
+
             from plane import PlaneConstants
 
             # return a PlaneConstants object built from the values
